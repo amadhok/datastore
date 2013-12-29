@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="windows-1252" ?>
+<project name="Project1" default="all">
+  <property file="build.properties"/>
+  <target name="init">
+    <tstamp/>
+    <mkdir dir="${output.dir}"/>
+  </target>
+  <target name="all" description="Build the project" depends="compile,copy,jarCreate,clean"/>
+  <target name="clean" description="Clean the project">
+    <delete includeemptydirs="true" quiet="true">
+      <fileset dir="${output.dir}" includes="**/*"/>
+    </delete>
+  </target>
+  <target name="compile" description="Compile Java source files" depends="init">
+    <javac destdir="${output.dir}" debug="${javac.debug}" includeantruntime="false"
+           nowarn="${javac.nowarn}" deprecation="${javac.deprecation}"
+           encoding="Cp1252" source="1.6" target="1.6">
+      <src path="src"/>
+    </javac>
+  </target>
+  <target name="jarCreate" description="compress classes into jar">
+    <jar destfile="${output.jar}/datastore.jar"
+         basedir="${output.dir}"
+    />
+  </target>
+  <target name="copy" description="Copy files to output directory"
+          depends="init">
+    <patternset id="copy.patterns">
+      <include name="**/*.gif"/>
+      <include name="**/*.jpg"/>
+      <include name="**/*.jpeg"/>
+      <include name="**/*.png"/>
+      <include name="**/*.properties"/>
+      <include name="**/*.xml"/>
+      <include name="**/*.ejx"/>
+      <include name="**/*.xcfg"/>
+      <include name="**/*.cpx"/>
+      <include name="**/*.dcx"/>
+      <include name="**/*.sva"/>
+      <include name="**/*.wsdl"/>
+      <include name="**/*.ini"/>
+      <include name="**/*.tld"/>
+      <include name="**/*.tag"/>
+      <include name="**/*.xlf"/>
+      <include name="**/*.xsl"/>
+      <include name="**/*.xsd"/>
+    </patternset>
+    <copy todir="${output.dir}">
+      <fileset dir="src">
+        <patternset refid="copy.patterns"/>
+      </fileset>
+    </copy>
+  </target>
+</project>
